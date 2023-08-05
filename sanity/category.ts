@@ -5,7 +5,7 @@ export const Category = defineType(
         type:'document',
         title:'Category',
         fields: [
-            defineField ({          /// forv single category
+            defineField ({          /// forv single category---
                 name:'name',
                 title:'Category Name',
                 type:'string'
