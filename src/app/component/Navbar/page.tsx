@@ -16,7 +16,7 @@ import Link from "next/link";
 export default function Navbar() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { counter, setCounter } = useCounterContext(); // Access the counter value from the CounterContext
+  const {counter, setCounter } = useCounterContext(); // Access the counter value from the CounterContext
   const router = useRouter();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -55,7 +55,7 @@ export default function Navbar() {
             }}
             className='ml-2'><HiOutlineShoppingCart className="w-8 h-8" /></button>
               <div className="absolute -top-2 right-0 flex items-center justify-center w-5 h-5 bg-red-600 rounded-full">
-                <div className="font-light text-xs text-white">{counter}</div>
+                <div className="font-light text-sm text-white">{counter}</div>
               </div>
             </div>
 
@@ -154,35 +154,3 @@ export default function Navbar() {
     </div>
   );
 }
-
-
-
-
-      {/* {isMenuOpen && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-end">
-          <div className="md:hidden bg-white w-3/4 h-screen flex flex-col items-center">
-            <div className="flex justify-center items-center px-4 gap-24 py-2 pt-8">
-              <h1 className="text-2xl pr-4">Menu</h1>
-              <button onClick={toggleMenu}>
-                <RiCloseFill className="w-7 h-7" />
-              </button>
-            </div>
-            <div className="my-4">
-              <input
-                type="text"
-                id="responsive-search"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[200px] px-4 py-2.5"
-                placeholder="Search"
-                required
-              />
-            </div>
-          <button className="my-4">Products</button>
-            <button className="my-4"> 
-            <a href="/signin">
-            Account </a></button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-} */}

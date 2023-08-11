@@ -37,7 +37,7 @@ export default function Pre({ params }: { params: { id: string } }) {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [quantity, setQuantity] = useState(1);
   const { counter, setCounter } = useCounterContext();
-  const [cookies, setCookie] = useCookies(['cart']); // Set the cookie name you want to use
+  // const [cookies, setCookie] = useCookies(['cart']); // Set the cookie name you want to use
 
   const changeQuantity = (value: number) => {
     // Don't allow the quantity to be less than 0
@@ -92,118 +92,14 @@ export default function Pre({ params }: { params: { id: string } }) {
 
   // Logic for adding product to the cart     local storage
 
-  // const handleAddToCart = async (event: React.MouseEvent<HTMLElement>) => {
-  //   event.preventDefault();
-    
-  //   let price = product.on_sale ? product.sale_price : product.price;
-
-  //   let cartData: CartProduct[] = [];
-
-  //   let cartProduct: CartProduct = {
-  //     _id: product?._id,
-  //     title: product?.title,
-  //     price: price,
-  //     quantity: quantity,
-  //     image: product?.image[0],
-  //   };
-
-  //    // Generate a unique userId using uuid
-  //    const userId = uuid();
-
-  //   if (localStorage.getItem('cart')) {
-  //     let data = localStorage.getItem('cart');
-  //     cartData = JSON.parse(String(data));
-  //     let idx: number = -1;
-  //     cartData.map((item: CartProduct, index: number) => {
-  //       if (item._id === cartProduct._id) {
-  //         let qty: number = item.quantity;
-  //         qty = qty + cartProduct.quantity;
-  //         cartProduct.quantity = qty;
-  //         idx = index;
-  //       }
-  //     });
-
-  //     if (idx !== -1) {
-  //       cartData.splice(idx, 1, cartProduct);
-  //     } else {
-  //       cartData.push(cartProduct);
-  //     }
-  //   } else {
-  //     cartData.push(cartProduct);
-  //   }
-
-  //   console.log('cartProduct: ', cartProduct);
-  //   let totalItems = cartData.length;
-  //   setCounter(totalItems);
-
-  //   // let data = JSON.stringify(cartData);
-
-  //   const dataToStore = JSON.stringify({
-  //     userId: userId,
-  //     cartData: cartData,
-  //   });
-
-  //   localStorage.removeItem('cart');
-
-  //   setTimeout(() => {
-  //     localStorage.setItem('cart', dataToStore);
-  //   }, 1000);
-  // };
-
-  // const handleAddToCart = (event: React.MouseEvent<HTMLElement>) => {
-  //   event.preventDefault();
-
-  //   let price = product.on_sale ? product.sale_price : product.price;
-
-  //   let cartData: CartProduct[] = cookies['cart'] || [];
-
-  //   let cartProduct: CartProduct = {
-  //     _id: product?._id,
-  //     title: product?.title,
-  //     price: price,
-  //     quantity: quantity,
-  //     image: product?.image[0],
-  //   };
-
-  //   // Generate a unique userId using uuid
-  //   const userId = uuid();
-
-  //   let existingCartItemIndex = cartData.findIndex(
-  //     (item: CartProduct) => item._id === cartProduct._id
-  //   );
-
-  //   if (existingCartItemIndex !== -1) {
-  //     let existingCartItem = cartData[existingCartItemIndex];
-  //     existingCartItem.quantity += cartProduct.quantity;
-  //     cartData.splice(existingCartItemIndex, 1, existingCartItem);
-  //   } else {
-  //     cartData.push(cartProduct);
-  //   }
-
-  //   let totalItems = cartData.length;
-  //   setCounter(totalItems);
-
-  //   const dataToStore = JSON.stringify({
-  //     userId: userId,
-  //     cartData: cartData,
-  //   });
-
-  //   // Set the cart cookie to expire in 7 days
-  //   setCookie('cart', dataToStore, { path: '/', maxAge: 7 * 24 * 60 * 60 }); // Max age in seconds
-
-  //   // You can also set an expiration date using Date object:
-  //   // setCookie('cart', dataToStore, { path: '/', expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) });
-  // }; 
-
-  const handleAddToCart = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddToCart = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-
+    
     let price = product.on_sale ? product.sale_price : product.price;
 
-     // Ensure cartData is an array or initialize it as an empty array
-    let cartData: CartProduct[] = cookies["cart"] || [];
+    let cartData: CartProduct[] = [];
 
-    let cartProduct = {
+    let cartProduct: CartProduct = {
       _id: product?._id,
       title: product?.title,
       price: price,
@@ -211,47 +107,50 @@ export default function Pre({ params }: { params: { id: string } }) {
       image: product?.image[0],
     };
 
-    let existingCartItemIndex = cartData.findIndex(
-      (item: CartProduct) => item._id === cartProduct._id
-    );
+     // Generate a unique userId using uuid
+     const userId = uuid();
 
-    if (existingCartItemIndex !== -1) {
-      let existingCartItem = cartData[existingCartItemIndex];
-      existingCartItem.quantity += cartProduct.quantity;
-      cartData.splice(existingCartItemIndex, 1, existingCartItem);
+    if (localStorage.getItem('cart')) {
+      let data = localStorage.getItem('cart');
+      cartData = JSON.parse(String(data));
+      let idx: number = -1;
+      cartData.map((item: CartProduct, index: number) => {
+        if (item._id === cartProduct._id) {
+          let qty: number = item.quantity;
+          qty = qty + cartProduct.quantity;
+          cartProduct.quantity = qty;
+          idx = index;
+        }
+      });
+
+      if (idx !== -1) {
+        cartData.splice(idx, 1, cartProduct);
+      } else {
+        cartData.push(cartProduct);
+      }
     } else {
       cartData.push(cartProduct);
     }
 
+    console.log('cartProduct: ', cartProduct);
     let totalItems = cartData.length;
     setCounter(totalItems);
-     // Generate a unique userId using uuid
-     const userId = uuid();
+
+    // let data = JSON.stringify(cartData);
 
     const dataToStore = JSON.stringify({
-      userId: uuid(),
+      userId: userId,
       cartData: cartData,
     });
 
-    // Set the cart cookie to expire in 7 days
-    setCookie("cart", dataToStore, { path: "/", maxAge: 7 * 24 * 60 * 60 }); // Max age in seconds
+    localStorage.removeItem('cart');
 
-    try {
-      // Make the POST request to the API endpoint to save cart data to the database
-      const response = await axios.post("/api/add-to-cart", {
-        userId: userId,
-        cartData: cartData,
-      });
-      console.log("POST API Response:", response.data);
-    } catch (error) {
-      // Perform type assertion to convert 'error' to type { message: string }
-      const errorMessage = (error as { message: string }).message;
-      console.error("Error adding to cart:", errorMessage);
-    }
+    setTimeout(() => {
+      localStorage.setItem('cart', dataToStore);
+    }, 1000);
   };
 
-
-
+  
   return (
     <section>
       <div className='relative mx-auto max-w-screen-xl lg:mt-32 mt-20 px-4 lg:px-16 py-8'>
