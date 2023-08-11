@@ -177,4 +177,40 @@
 //   }
 // };
 
+import { db } from '@vercel/postgres';
+import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest) {
+  const client = await db.connect();
+ 
+  try {
+    // await client.sql`CREATE TABLE Pets ( Name varchar(255), Owner varchar(255) );`;
+    // const names = ['Fiona', 'max'];
+    
+  } catch (error) {
+    return NextResponse.json({ error }, {
+        status: 500,
+      });
+  }
+
+  const pets = await client.sql`SELECT * FROM Pets;`;
+  return NextResponse.json({ pets });
+  }
+
+
+
+
+
+  export async function POST(request: NextRequest){
+    const client = await db.connect();
+    const req = await request.json();
+
+
+    // console.log("req iss", req);
+
+    // console.log("pet name is", req.petName);
+    // console.log("owner is", req.ownerName);
+    
+    await client.sql`INSERT INTO Pets (Name, Owner) VALUES (${req.petName},${req.ownerName});`;
+    return NextResponse.json(req);
+  }
