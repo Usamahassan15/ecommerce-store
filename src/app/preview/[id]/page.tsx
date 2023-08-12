@@ -92,9 +92,66 @@ export default function Pre({ params }: { params: { id: string } }) {
 
   // Logic for adding product to the cart     local storage
 
+  // const handleAddToCart = async (event: React.MouseEvent<HTMLElement>) => {
+  //   event.preventDefault();
+    
+  //   let price = product.on_sale ? product.sale_price : product.price;
+
+  //   let cartData: CartProduct[] = [];
+
+  //   let cartProduct: CartProduct = {
+  //     _id: product?._id,
+  //     title: product?.title,
+  //     price: price,
+  //     quantity: quantity,
+  //     image: product?.image[0],
+  //   };
+
+  //    // Generate a unique userId using uuid
+  //    const userId = uuid();
+
+  //   if (localStorage.getItem('cart')) {
+  //     let data = localStorage.getItem('cart');
+  //     cartData = JSON.parse(String(data));
+  //     let idx: number = -1;
+  //     cartData.map((item: CartProduct, index: number) => {
+  //       if (item._id === cartProduct._id) {
+  //         let qty: number = item.quantity;
+  //         qty = qty + cartProduct.quantity;
+  //         cartProduct.quantity = qty;
+  //         idx = index;
+  //       }
+  //     });
+
+  //     if (idx !== -1) {
+  //       cartData.splice(idx, 1, cartProduct);
+  //     } else {
+  //       cartData.push(cartProduct);
+  //     }
+  //   } else {
+  //     cartData.push(cartProduct);
+  //   }
+
+  //   console.log('cartProduct: ', cartProduct);
+  //   let totalItems = cartData.length;
+  //   setCounter(totalItems);
+
+  //   // let data = JSON.stringify(cartData);
+
+  //   const dataToStore = JSON.stringify({
+  //     userId: userId,
+  //     cartData: cartData,
+  //   });
+
+  //   localStorage.removeItem('cart');
+
+  //   setTimeout(() => {
+  //     localStorage.setItem('cart', dataToStore);
+  //   }, 1000);
+  // };
   const handleAddToCart = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    
+
     let price = product.on_sale ? product.sale_price : product.price;
 
     let cartData: CartProduct[] = [];
@@ -107,12 +164,12 @@ export default function Pre({ params }: { params: { id: string } }) {
       image: product?.image[0],
     };
 
-     // Generate a unique userId using uuid
-     const userId = uuid();
+    // Generate a unique userId using uuid
+    const userId = uuid();
 
     if (localStorage.getItem('cart')) {
       let data = localStorage.getItem('cart');
-      cartData = JSON.parse(String(data));
+      cartData = JSON.parse(String (data)); // Parse the data correctly
       let idx: number = -1;
       cartData.map((item: CartProduct, index: number) => {
         if (item._id === cartProduct._id) {
@@ -135,8 +192,6 @@ export default function Pre({ params }: { params: { id: string } }) {
     console.log('cartProduct: ', cartProduct);
     let totalItems = cartData.length;
     setCounter(totalItems);
-
-    // let data = JSON.stringify(cartData);
 
     const dataToStore = JSON.stringify({
       userId: userId,
